@@ -1,8 +1,5 @@
 <template>
-  <!--
-  Conteneur principal de l'application utilisant Vuetify
-    * <v-app> est l'enveloppe principale pour l'intégration des composants Vuetify
-  -->
+  <!-- Conteneur principal Vuetify -->
   <v-app>
     <!-- Header -->
     <app-header />
@@ -12,15 +9,15 @@
       <router-view />
     </v-main>
 
-    <!-- Nouveau footer -->
+    <!-- Footer -->
     <app-footer />
   </v-app>
 </template>
 
 <script setup>
-// Importation du composant AppHeader
+// Header
 import AppHeader from '@/components/AppHeader.vue'
 
-// Importation du footer
+// Footer
 import AppFooter from '@/components/AppFooter.vue'
 </script>
