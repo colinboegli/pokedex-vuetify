@@ -4,7 +4,23 @@
       Pokédex
     </h1>
 
-    <v-row>
+    <v-alert
+      v-if="isLoading"
+      type="info"
+      class="mb-4"
+    >
+      Chargement des Pokémon...
+    </v-alert>
+
+    <v-alert
+      v-else-if="error"
+      type="error"
+      class="mb-4"
+    >
+      {{ error }}
+    </v-alert>
+
+    <v-row v-else>
       <v-col
         v-for="pokemon in pokemons"
         :key="pokemon.id"
@@ -21,19 +37,9 @@
 
 <script setup>
 import PokemonCard from '@/components/PokemonCard.vue'
+import { usePokemonStore } from '@/stores/pokemonStore'
+import { storeToRefs } from 'pinia'
 
-const pokemons = ref([])
-
-onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost:3535/pokemons')
-    const data = await response.json()
-
-    console.log(data)
-
-    pokemons.value = data
-  } catch (error) {
-    console.error('Erreur lors du chargement des Pokémon :', error)
-  }
-})
+const pokemonStore = usePokemonStore()
+const { pokemons, isLoading, error } = storeToRefs(pokemonStore)
 </script>

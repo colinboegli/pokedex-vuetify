@@ -9,15 +9,15 @@
     </v-btn>
 
     <v-alert
-      v-if="error"
+      v-if="!pokemon"
       type="error"
       class="mb-4"
     >
-      {{ error }}
+      Pokémon introuvable
     </v-alert>
 
     <v-card
-      v-else-if="pokemon"
+      v-else
       class="pa-4"
     >
       <v-img
@@ -43,26 +43,15 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { getImageUrl } from '@/utils/imageUrl'
+import { usePokemonStore } from '@/stores/pokemonStore'
 
 const route = useRoute()
+const pokemonStore = usePokemonStore()
 
-const pokemon = ref(null)
-const error = ref('')
-
-onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost:3535/pokemons')
-    const data = await response.json()
-
-    pokemon.value = data.find(p => p.id === route.params.id)
-
-    if (!pokemon.value) {
-      error.value = 'Pokémon introuvable'
-    }
-  } catch (err) {
-    error.value = 'Erreur lors du chargement du Pokémon'
-    console.error(err)
-  }
+const pokemon = computed(() => {
+  return pokemonStore.getPokemonById(route.params.id)
 })
 </script>
